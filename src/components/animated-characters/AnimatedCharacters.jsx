@@ -202,7 +202,7 @@ export default function AnimatedCharacters({
   const isHidingPassword = passwordLength > 0 && !showPassword;
   const isLookingAway = isPasswordFocused && !showPassword;
 
-  // 综合样式生成器：恢复原始视觉参数 + 优化后的平滑逻辑
+  // 综合样式生成器：原始视觉参数 + 优化后的平滑逻辑
   const getCharStyle = (backgroundColor, zIndex, pos, dimensions, transform) => {
     const transformTransition = (isPasswordFocused || isTyping) ? "transform 0.6s ease-out" : "transform 0.1s ease-out";
 
