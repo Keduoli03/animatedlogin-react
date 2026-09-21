@@ -3,6 +3,9 @@ import { AnimatedCharacters } from "./components";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** 演示用：这个邮箱走成功分支，其他一律报密码错误 */
+const DEMO_EMAIL = "demo@example.com";
+
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,31 +18,50 @@ function App() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+
+  /** 报错 + 让角色摇头垮脸，2 秒后表情复位（错误文案留着） */
+  const fail = (message) => {
+    setErrorMsg(message);
+    setLoginFailed(true);
+    setTimeout(() => setLoginFailed(false), 2000);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setEmailError(false);
     setPasswordError(false);
     setErrorMsg("");
+    setLoginFailed(false);
+    setLoginSuccess(false);
 
     const cleanEmail = email.trim();
 
     if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
       setEmailError(true);
-      setErrorMsg("Please enter a valid email address.");
+      fail("Please enter a valid email address.");
       return;
     }
 
     if (!password || password.length < 6) {
       setPasswordError(true);
-      setErrorMsg("Password must be at least 6 characters.");
+      fail("Password must be at least 6 characters.");
       return;
     }
 
     setIsSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
+
+    if (cleanEmail === DEMO_EMAIL) {
+      setLoginSuccess(true);
+      setTimeout(() => setLoginSuccess(false), 4000);
+      return;
+    }
+
     setPasswordError(true);
-    setErrorMsg("Invalid email or password. Please try again.");
+    fail("Invalid email or password. Please try again.");
   };
 
   return (
@@ -61,6 +83,8 @@ function App() {
             isPasswordFocused={isPasswordFocused}
             showPassword={showPassword}
             passwordLength={password.length}
+            loginFailed={loginFailed}
+            loginSuccess={loginSuccess}
           />
         </div>
 
@@ -191,6 +215,10 @@ function App() {
               </div>
             </button>
           </form>
+
+          <p className="demo-hint">
+            演示用：邮箱填 <code>{DEMO_EMAIL}</code> + 任意 6 位以上密码走成功分支，其他组合演示失败
+          </p>
 
           <div className="signup-link">
             Don&apos;t have an account? <a href="#">Sign Up</a>
