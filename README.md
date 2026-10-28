@@ -2,6 +2,8 @@
 
 一个带有交互动画角色的 React 登录页面，采用 Vite 构建。
 
+> 💡 灵感来源：[careercompass](https://github.com/arsh342/careercompass) by [arsh342](https://github.com/arsh342)
+
 ## 🎯 特性
 
 - **交互动画角色**：左侧面板展示了四个可爱的动画角色（紫色、黑色、橙色、黄色），它们会响应用户的输入行为
